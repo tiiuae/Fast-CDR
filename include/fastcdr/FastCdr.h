@@ -28,9 +28,7 @@
 #include <stdlib.h>
 #endif
 
-#if HAVE_CXX0X
 #include <array>
-#endif
 
 namespace eprosima
 {
@@ -258,7 +256,6 @@ namespace eprosima
                  */
                 inline FastCdr& operator<<(const std::wstring &string_t){return serialize(string_t);}
 
-#if HAVE_CXX0X
                 /*!
                  * @brief This operator template is used to serialize arrays.
                  * @param array_t The array that will be serialized in the buffer.
@@ -267,7 +264,6 @@ namespace eprosima
                  */
                 template<class _T, size_t _Size>
                     inline FastCdr& operator<<(const std::array<_T, _Size> &array_t){return serialize<_T, _Size>(array_t);}
-#endif
 
                 /*!
                  * @brief This operator template is used to serialize sequences.
@@ -431,7 +427,6 @@ namespace eprosima
                  */
                 inline FastCdr& operator>>(std::wstring &string_t){return deserialize(string_t);}
 
-#if HAVE_CXX0X
                 /*!
                  * @brief This operator template is used to deserialize arrays.
                  * @param array_t The variable that will store the array read from the buffer.
@@ -440,7 +435,6 @@ namespace eprosima
                  */
                 template<class _T, size_t _Size>
                     inline FastCdr& operator>>(std::array<_T, _Size> &array_t){return deserialize<_T, _Size>(array_t);}
-#endif
 
                 /*!
                  * @brief This operator template is used to deserialize sequences.
@@ -720,7 +714,6 @@ namespace eprosima
                 inline
                     FastCdr& serialize(const std::wstring &string_t) {return serialize(string_t.c_str());}
 
-#if HAVE_CXX0X
                 /*!
                  * @brief This function template serializes an array.
                  * @param array_t The array that will be serialized in the buffer.
@@ -730,9 +723,8 @@ namespace eprosima
                 template<class _T, size_t _Size>
                     inline FastCdr& serialize(const std::array<_T, _Size> &array_t)
                     { return serializeArray(array_t.data(), array_t.size());}
-#endif
 
-#if !defined(_MSC_VER) && HAVE_CXX0X
+#if !defined(_MSC_VER)
                 /*!
                  * @brief This function template serializes a sequence of booleans.
                  * @param vector_t The sequence that will be serialized in the buffer.
@@ -1308,7 +1300,6 @@ namespace eprosima
                         return *this;
                     }
 
-#if HAVE_CXX0X
                 /*!
                  * @brief This function template deserializes an array.
                  * @param array_t The variable that will store the array read from the buffer.
@@ -1318,9 +1309,8 @@ namespace eprosima
                 template<class _T, size_t _Size>
                     inline FastCdr& deserialize(std::array<_T, _Size> &array_t)
                     { return deserializeArray(array_t.data(), array_t.size());}
-#endif
 
-#if !defined(_MSC_VER) && HAVE_CXX0X
+#if !defined(_MSC_VER)
                 /*!
                  * @brief This function template deserializes a sequence of booleans.
                  * @param vector_t The variable that will store the sequence read from the buffer.
@@ -1595,7 +1585,7 @@ namespace eprosima
                         return *this;
                     }
 
-#if !defined(_MSC_VER) && HAVE_CXX0X
+#if !defined(_MSC_VER)
                 /*!
                  * @brief This function template deserializes a string sequence.
                  * This function allocates memory to store the sequence. The user pointer will be set to point this allocated memory.
@@ -1707,7 +1697,6 @@ namespace eprosima
 
                 FastCdr& deserializeWStringSequence(std::wstring *&sequence_t, size_t &numElements);
 
-#if HAVE_CXX0X
                 /*!
                  * @brief This function template detects the content type of the STD container array and serializes the array.
                  * @param array_t The array that will be serialized in the buffer.
@@ -1733,7 +1722,6 @@ namespace eprosima
                     {
                         return deserializeArray(array_t->data(), numElements * array_t->size());
                     }
-#endif
 
                 bool resize(size_t minSizeInc);
 

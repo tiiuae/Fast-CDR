@@ -62,14 +62,12 @@ namespace eprosima
                      */
                     Cdr_DllAPI Exception(const Exception &ex);
 
-#if HAVE_CXX0X
                     /*!
                      * @brief Default move constructor.
                      *
                      * @param ex Exception that will be moved.
                      */
                     Cdr_DllAPI Exception(Exception&& ex);
-#endif
 
                     /*!
                      * @brief Assigment operation.
@@ -78,14 +76,12 @@ namespace eprosima
                      */
                     Cdr_DllAPI Exception& operator=(const Exception &ex);
 
-#if HAVE_CXX0X
                     /*!
                      * @brief Assigment operation.
                      *
                      * @param ex Exception that will be moved.
                      */
                     Cdr_DllAPI Exception& operator=(Exception&&);
-#endif
 
                 private:
 

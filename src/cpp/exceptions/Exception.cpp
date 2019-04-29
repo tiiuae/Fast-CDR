@@ -24,11 +24,9 @@ Exception::Exception(const Exception &ex) : m_message(ex.m_message)
 {
 }
 
-#if HAVE_CXX0X
 Exception::Exception(Exception&& ex) : m_message(std::move(ex.m_message))
 {
 }
-#endif
 
 Exception& Exception::operator=(const Exception &ex)
 {
@@ -36,13 +34,11 @@ Exception& Exception::operator=(const Exception &ex)
     return *this;
 }
 
-#if HAVE_CXX0X
 Exception& Exception::operator=(Exception&& ex)
 {
     m_message = std::move(ex.m_message);
     return *this;
 }
-#endif
 
 Exception::~Exception() throw()
 {

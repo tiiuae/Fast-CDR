@@ -20,16 +20,6 @@
 #define FASTCDR_VERSION_MICRO @PROJECT_VERSION_PATCH@
 #define FASTCDR_VERSION_STR "@PROJECT_VERSION@"
 
-// C++11 support defines
-#ifndef HAVE_CXX11
-#define HAVE_CXX11 @HAVE_CXX11@
-#endif
-
-// C++0x support defines
-#ifndef HAVE_CXX0X
-#define HAVE_CXX0X @HAVE_CXX0X@
-#endif
-
 // C++ constexpr support
 #ifndef HAVE_CXX_CONSTEXPR
 #define HAVE_CXX_CONSTEXPR @HAVE_CXX_CONSTEXPR@
