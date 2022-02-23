@@ -1,0 +1,61 @@
+name: main
+
+on:
+  push:
+    branches: [ tii_build_scripts_v1.0.22 ]
+
+jobs:
+  tii-deb-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ros2_distro: [ galactic ]
+    steps:
+
+      - name: Checkout fastcdr
+        uses: actions/checkout@v2
+        with:
+          path: fastcdr
+          ref: tii_build_scripts_v1.0.22
+
+      # Run docker build
+      - name: Run fastcdr docker build
+        env:
+          ROS: 1
+          ROS_DISTRO: ${{ matrix.ros2_distro }}
+          PACKAGE_NAME: fastcdr
+        run: |
+          set -eux
+          mkdir bin
+          pushd fastcdr
+          ./build.sh ../bin/
+          popd
+
+      - uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_TOKEN }}
+
+      - name: Upload to Artifactory
+        env:
+          ARTIFACTORY_REPO: debian-public-local
+          DISTRIBUTION: focal
+          COMPONENT: fog-sw-sros
+          ARCHITECTURE: amd64
+          BUILD_NAME: fastcdr
+          CI: true
+        if: github.event_name == 'push'
+        run: |
+          set -exu
+          jfrog rt ping
+          pkg=$(find bin -name 'ros-${{ matrix.ros2_distro }}-fastcdr*.deb')
+          pkg_name=$(basename $pkg)
+          jfrog rt u --deb "$DISTRIBUTION/$COMPONENT/$ARCHITECTURE" \
+                     --target-props COMMIT="$GITHUB_SHA" \
+                     --build-name "$BUILD_NAME" \
+                     --build-number "$GITHUB_SHA" \
+                     "$pkg" \
+                     "$ARTIFACTORY_REPO/$pkg_name"
+          jfrog rt build-publish "$BUILD_NAME" "$GITHUB_SHA"
+          jfrog rt bpr "$BUILD_NAME" "$GITHUB_SHA" "$ARTIFACTORY_REPO" \
+                       --status dev \
+                       --comment "development build"
