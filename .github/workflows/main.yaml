@@ -2,7 +2,7 @@ name: main
 
 on:
   push:
-    branches: [ tii_build_scripts_v1.0.22 ]
+    branches: [ tii_build_v1.0.24 ]
 
 jobs:
   tii-deb-build:
@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: fastcdr
-          ref: tii_build_scripts_v1.0.22
+          ref: tii_build_v1.0.24
 
       # Run docker build
       - name: Run fastcdr docker build
